@@ -63,12 +63,16 @@ namespace IECall
         private void btnRun_Click(object sender, EventArgs e)
         {            
             int timeInterval = 0;
-            try{
-                timeInterval = int.Parse(textBox1.Text);
-            }
-            catch
+
+            if (!int.TryParse(textBox1.Text, out timeInterval))
             {
-                MessageBox.Show("秒数格式不对");
+                MessageBox.Show("输入的秒数格式不对");
+                return;
+            }
+
+            if (!GetIHTMLDocByUrl())
+            {
+                MessageBox.Show("未找到学习页面，无法启动定时任务");
                 return;
             }
 
@@ -96,7 +100,7 @@ namespace IECall
         {
             if (!GetIHTMLDocByUrl())
             {
-                MessageBox.Show("未找到学习页面，请确定已打开");
+                MessageBox.Show("任务中断，未找到学习页面，请确定已打开");
                 this.btnStop_Click(sender, e);
                 return;
             }
